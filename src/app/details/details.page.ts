@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PhotosService} from '../services/photos.service';
+import { StorageService} from '../services/storage.service';
+
 
 @Component({
   selector: 'app-details',
@@ -14,11 +16,23 @@ export class DetailsPage implements OnInit {
 
   constructor(
     private activatedRoute:ActivatedRoute, 
-    private photoService: PhotosService) { }
+    private photoService: PhotosService,
+    private storageService: StorageService) { }
     // On definit l'index du tableau de photo à 0
     photoIndex = 0;
     // On déclare notre élément pour l'utiliser dans la page détail
-    photoDetails = this.photoService.data[this.photoIndex]
+    photoDetails = this.photoService.data[this.photoIndex];
+    // le tableau des favoris est vide au départ
+    favArray = [] ;
+    // c'est la méthode d'ajout qui récup les données en mémoire
+    // avant d'ajouter la photo
+    async addToFavorites(){
+      const data = await this.storageService.getFavPhotos();
+      this.favArray = data ? data : [] ;
+      this.favArray.push(this.photoDetails);
+      this.storageService.setFavPhotos(this.favArray);
+      
+    }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params)=>{
@@ -29,9 +43,13 @@ export class DetailsPage implements OnInit {
       params.id );
 
       this.photoDetails = this.photoService.data[this.photoIndex ];
-      
+      // On recherche si cette photo est présente dans les favoris
+      this.storageService.getFavById( params.id ).then((index) => {
+        console.log('Laphoto est dans les favoris ?');
 
-    })
+      })
+
+    });
     
     
     
