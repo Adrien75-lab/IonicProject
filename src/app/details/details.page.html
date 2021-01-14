@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/">
+        
+      </ion-back-button>
+      
+    </ion-buttons>
+    <ion-title>Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card>
+      <img width="100%" [src]="photoDetails.url" />
+        <ion-card-header>
+          <ion-card-subtitle>{{photoDetails.author}}</ion-card-subtitle>
+          <ion-card-title>{{photoDetails.description}}</ion-card-title>
+        </ion-card-header>
+      
+        <ion-card-content>
+          {{photoDetails.description}}
+        </ion-card-content>
+      </ion-card>
+      <ion-button expand="full" routerLink="/tabs/tab2">Retour à la liste</ion-button>
+      
+      
+
+
+</ion-content>
+<button ion-button incon-only style="font-size: 1.7em" (click)=toggleFavorite()>
+    <ion-icon [name]="isFavorite ? 'star':'star-outline'"></ion-icon>
+  </button>
